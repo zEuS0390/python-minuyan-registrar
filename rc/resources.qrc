@@ -1,0 +1,6 @@
+<!DOCTYPE RC>
+<RCC>
+    <qresource>
+        <file alias="main.png">../img/icons/main.png</file>
+    </qresource>
+</RCC>
