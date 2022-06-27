@@ -21,11 +21,17 @@ class JHSOptions(QWidget):
         formbtnsgroup = QGroupBox("Form Options")
         formbtnslayout = QVBoxLayout()
         formbtnsgroup.setLayout(formbtnslayout)
+
         self.add_form_btn = QPushButton("Add")
         self.find_form_btn = QPushButton("Find")
         self.archive_form_btn = QPushButton("Archives")
+
+        self.logout_btn = QPushButton("Log Out")
+
         formbtnslayout.addWidget(self.add_form_btn)
         formbtnslayout.addWidget(self.find_form_btn)
         formbtnslayout.addWidget(self.archive_form_btn)
+        self.mainlayout.addWidget(self.logout_btn)
         self.mainlayout.addWidget(formbtnsgroup)
         self.mainlayout.addStretch()
+        

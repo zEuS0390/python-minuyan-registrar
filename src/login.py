@@ -13,7 +13,7 @@ import os
 # Login Widget
 class Login(QWidget):
 
-    success = pyqtSignal()
+    success = pyqtSignal(int)
     
     # Constructor
     def __init__(self, parser: ConfigParser, parent=None):
@@ -82,5 +82,6 @@ class Login(QWidget):
     def authenticate(self):
         username = self.username_input.text()
         password = self.password_input.text()
-        self.success.emit()
+        formselect_index = self.formselect_input.currentIndex()
+        self.success.emit(formselect_index)
         self.close()

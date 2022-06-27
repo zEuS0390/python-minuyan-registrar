@@ -13,6 +13,6 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     main_app = MainApp(parser)
     login = Login(parser)
-    login.success.connect(main_app.show)
+    login.success.connect(main_app.showSelected)
     login.show()
     sys.exit(app.exec())

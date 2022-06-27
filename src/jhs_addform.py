@@ -216,6 +216,7 @@ class JHSAddForm(QWidget):
 
         self.recordbtnslayout.addWidget(self.add_record_btn)
         self.recordbtnslayout.addWidget(self.delete_record_btn)
+        self.recordbtnslayout.addStretch()
 
         self.recordlayout.addLayout(self.recordbtnslayout)
         self.recordlayout.addWidget(self.recordtabs)
@@ -339,6 +340,9 @@ class JHSAddForm(QWidget):
             rowcount = gradestable.rowCount()+1
             gradestable.setRowCount(rowcount)
         add_grades_btn.clicked.connect(add_grades_row)
+        
+        for _ in range(8):
+            add_grades_row()
 
         # Delete the selected row in grades table
         def delete_grades_row():
