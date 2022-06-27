@@ -3,10 +3,11 @@ from PyQt5.QtWidgets import (
     QVBoxLayout, QHBoxLayout,
     QTabWidget, QTableWidget
 )
+from PyQt5.QtGui import QIcon
 from src.jhs_addform import JHSAddForm
 from src.jhs_options import JHSOptions
 from src.constants import *
-import os, rc.resources
+import os
 
 # Main Application Widget
 class MainApp(QWidget):
@@ -20,6 +21,7 @@ class MainApp(QWidget):
 
     # Initial configuration of the widget
     def setup_UI(self):
+        self.setWindowIcon(QIcon(":/main.png"))
         self.setMinimumSize(self.parser.getint("application", "min_width"), 
                             self.parser.getint("application", "min_height"))
         self.setWindowTitle(self.parser.get("application", "window_title"))

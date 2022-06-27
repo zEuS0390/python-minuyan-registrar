@@ -5,7 +5,7 @@ from configparser import ConfigParser
 from src.app import MainApp
 from src.login import Login
 from src.constants import *
-import os, sys
+import os, sys, rc.resources
 
 # Main entry point of the application
 if __name__ == "__main__":

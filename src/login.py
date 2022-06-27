@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import (
     QHBoxLayout, QPushButton,
     QComboBox
 )
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
 from configparser import ConfigParser
 from src.constants import *
@@ -25,6 +25,7 @@ class Login(QWidget):
 
     # Set up user interface of the widget
     def setup_UI(self):
+        self.setWindowIcon(QIcon(":/main.png"))
         self.setWindowTitle("Log In")
         self.mainlayout = QVBoxLayout()
         self.setLayout(self.mainlayout)
