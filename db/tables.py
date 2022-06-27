@@ -1,7 +1,8 @@
 from sqlalchemy import (
     FLOAT, Column, 
     VARCHAR, ForeignKey, 
-    Integer, Date, BLOB
+    Integer, Date, BLOB,
+    Boolean
 )
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import declarative_base
@@ -195,3 +196,13 @@ class SchoolYear(base):
     title = Column(VARCHAR(50))
     def __repr__(self):
         return f"SchoolYear(school_year_id={self.school_year_id}, title='{self.title}')"
+
+# User Table
+class User(base):
+    __tablename__ = "user"
+    user_id = Column(Integer, primary_key=True)
+    username = Column(VARCHAR(200))
+    password = Column(VARCHAR(200))
+    isAdmin = Column(Boolean, default=False)
+    def __repr__(self):
+        return f"User(user_id={self.user_id}, username='{self.username}')"
