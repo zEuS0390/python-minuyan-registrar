@@ -8,6 +8,7 @@ from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt, pyqtSignal
 from configparser import ConfigParser
 from src.constants import *
+from db.manager import Manager
 import os
 
 # Login Widget
@@ -20,8 +21,17 @@ class Login(QWidget):
         super(Login, self).__init__(parent)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.parser = parser
+        self.db = Manager()
         self.parser.read(os.path.join(CONFIG_DIR, APP_CONFIG))
         self.setup_UI()
+
+    # Check key press events
+    def keyPressEvent(self, key_event):
+        if key_event.key() == Qt.Key.Key_Return:
+            self.authenticate()
+        elif key_event.key() == Qt.Key.Key_Escape:
+            self.close()
+        return super().keyPressEvent(key_event)
 
     # Set up user interface of the widget
     def setup_UI(self):
@@ -34,7 +44,7 @@ class Login(QWidget):
         self.mainlayout.setContentsMargins(50, 50, 50, 50)
 
         font = QFont()
-        font.setPointSize(14)
+        font.setPointSize(self.parser.getint("application:login", "font_size"))
 
         # Form Selection
         self.formselect_layout = QVBoxLayout()
@@ -64,6 +74,7 @@ class Login(QWidget):
         self.password_label = QLabel("Password:")
         self.password_input = QLineEdit()
         self.password_label.setFont(font)
+        self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
         self.password_input.setFont(font)
         self.password_layout.addWidget(self.password_label)
         self.password_layout.addWidget(self.password_input)
@@ -79,9 +90,15 @@ class Login(QWidget):
         self.login_btn_layout.addWidget(self.login_btn)
         self.mainlayout.addLayout(self.login_btn_layout)
 
+        self.mainlayout.addStretch()
+
     def authenticate(self):
         username = self.username_input.text()
         password = self.password_input.text()
-        formselect_index = self.formselect_input.currentIndex()
-        self.success.emit(formselect_index)
-        self.close()
+        response = self.db.user_authenticate(username, password)
+        if response == True:
+            formselect_index = self.formselect_input.currentIndex()
+            self.success.emit(formselect_index)
+            self.close()
+        else:
+            pass

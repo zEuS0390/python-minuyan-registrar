@@ -3,13 +3,16 @@ from PyQt5.QtWidgets import (
     QVBoxLayout, QHBoxLayout
 )
 from src.jhs_addform import JHSAddForm
+from src.jhs_findform import JHSFindForm
 from src.jhs_options import JHSOptions
 from src.constants import *
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 import os
 
 class JHS(QWidget):
+
+    loggedOut = pyqtSignal()
 
     def __init__(self, parser, parent=None):
         super(JHS, self).__init__(parent)
@@ -27,9 +30,18 @@ class JHS(QWidget):
         self.contentlayout = QHBoxLayout()
         self.stackedwidget = QStackedWidget()
         self.jhsaddform = JHSAddForm()
+        self.jhsfindform = JHSFindForm()
         self.stackedwidget.addWidget(self.jhsaddform)
-        self.options = JHSOptions()
-        self.contentlayout.addWidget(self.options, 20)
-        self.contentlayout.addWidget(self.stackedwidget, 60)
+        self.stackedwidget.addWidget(self.jhsfindform)
+        self.options = JHSOptions(self.parser)
+        self.options.logout_btn.clicked.connect(self.logout)
+        self.options.add_form_btn.clicked.connect(lambda: self.stackedwidget.setCurrentIndex(0))
+        self.options.find_form_btn.clicked.connect(lambda: self.stackedwidget.setCurrentIndex(1))
+        self.contentlayout.addWidget(self.options, 10)
+        self.contentlayout.addWidget(self.stackedwidget, 90)
         self.mainlayout.addLayout(self.contentlayout)
         self.setLayout(self.mainlayout)
+
+    def logout(self):
+        self.loggedOut.emit()
+        self.close()

@@ -17,6 +17,12 @@ class Manager(metaclass=Singleton):
         base.metadata.create_all(self.engine)
         self.session = Session(self.engine)
 
+    def user_authenticate(self, username, password):
+        query = self.session.query(User).filter(User.username==username, User.password==password).first()
+        if query is not None:
+            return True
+        return False
+
     def jhs_add_form(self, filepath, learnerinfo, record):
         jhs_learner = JHSLearner()
         jhs_form = JHSForm(jhs_learner=jhs_learner)

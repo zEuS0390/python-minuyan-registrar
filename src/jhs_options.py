@@ -2,13 +2,19 @@ from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout,
     QPushButton, QGroupBox
 )
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
+from src.constants import *
+from configparser import ConfigParser
+import os
 
 class JHSOptions(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, parser: ConfigParser, parent=None):
         super(JHSOptions, self).__init__(parent)
         self.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.parser = parser
+        self.parser.read(os.path.join(CONFIG_DIR, APP_CONFIG))
         self.setup_UI()
 
     def setup_UI(self):
@@ -25,8 +31,12 @@ class JHSOptions(QWidget):
         self.add_form_btn = QPushButton("Add")
         self.find_form_btn = QPushButton("Find")
         self.archive_form_btn = QPushButton("Archives")
-
         self.logout_btn = QPushButton("Log Out")
+
+        font = QFont()
+        font.setPointSize(self.parser.getint("application:jhs_options", "font_size"))
+        formbtnsgroup.setFont(font)
+        self.logout_btn.setFont(font)
 
         formbtnslayout.addWidget(self.add_form_btn)
         formbtnslayout.addWidget(self.find_form_btn)
