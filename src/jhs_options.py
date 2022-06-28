@@ -31,11 +31,13 @@ class JHSOptions(QWidget):
         self.add_form_btn = QPushButton("Add")
         self.find_form_btn = QPushButton("Find")
         self.archive_form_btn = QPushButton("Archives")
+        self.settings_btn = QPushButton("Settings")
         self.logout_btn = QPushButton("Log Out")
 
         font = QFont()
         font.setPointSize(self.parser.getint("application:jhs_options", "font_size"))
         formbtnsgroup.setFont(font)
+        self.settings_btn.setFont(font)
         self.logout_btn.setFont(font)
 
         formbtnslayout.addWidget(self.add_form_btn)
@@ -43,5 +45,6 @@ class JHSOptions(QWidget):
         formbtnslayout.addWidget(self.archive_form_btn)
         self.mainlayout.addWidget(self.logout_btn)
         self.mainlayout.addWidget(formbtnsgroup)
+        self.mainlayout.addWidget(self.settings_btn)
         self.mainlayout.addStretch()
         
