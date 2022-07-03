@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
     QDateEdit, QComboBox,
     QHBoxLayout
 )
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 
 class JHSFindForm(QWidget):
@@ -31,6 +32,10 @@ class JHSFindForm(QWidget):
         self.setup_learner_details()
 
         self.learnergroup = QGroupBox("Learner's Information")
+        font = QFont()
+        font.setPointSize(12)
+        self.learnergroup.setFont(font)
+
         self.learnergroup.setLayout(self.learnerlayout)
         self.formlayout.addWidget(self.learnergroup)
         self.formlayout.addStretch(1)

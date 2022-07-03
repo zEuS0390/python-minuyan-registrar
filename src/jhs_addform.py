@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import (
     QAbstractScrollArea, QHeaderView, 
     QSizePolicy, QFileDialog, QDateEdit
 )
+from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from db.manager import Manager
 
@@ -55,9 +56,17 @@ class JHSAddForm(QWidget):
         # Set up form
         self.formwidget = QWidget()
         self.formwidget.setLayout(self.formlayout)
+
+        # Set up group boxes
         self.imageuploadgroup = QGroupBox("Image Upload")
         self.learnergroup = QGroupBox("Learner's Information")
         self.recordgroup = QGroupBox("Scholastic Record")
+        font = QFont()
+        font.setPointSize(12)
+        self.imageuploadgroup.setFont(font)
+        self.learnergroup.setFont(font)
+        self.recordgroup.setFont(font)
+
         self.learnergroup.setLayout(self.learnerlayout)
         self.recordgroup.setLayout(self.recordlayout)
         self.formlayout.addLayout(self.formhdrlayout)
@@ -76,7 +85,7 @@ class JHSAddForm(QWidget):
 
     def setup_form_upload(self):
         self.imageuploadgroup.setLayout(self.imageuploadlayout)
-        imageupload_btn = QPushButton("...")
+        imageupload_btn = QPushButton("Select...")
         self.imageupload_input = QLineEdit()
         imageupload_btn.clicked.connect(self.uploadImage)
         self.uploadinputlayout.addWidget(self.imageupload_input)
@@ -85,9 +94,14 @@ class JHSAddForm(QWidget):
 
     # Set up form buttons
     def setup_form_btns(self):
+        font = QFont()
+        font.setPointSize(12)
         submit_btn = QPushButton("Submit")
         cancel_btn = QPushButton("Cancel")
         clear_btn = QPushButton("Clear")
+        submit_btn.setFont(font)
+        cancel_btn.setFont(font)
+        clear_btn.setFont(font)
         submit_btn.clicked.connect(self.submit)
         cancel_btn.clicked.connect(self.cancel)
         clear_btn.clicked.connect(self.clear)
