@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import (
     QWidget, QStackedWidget,
-    QVBoxLayout, QHBoxLayout
+    QVBoxLayout, QHBoxLayout,
+    QSplitter
 )
 from src.jhs_addform import JHSAddForm
 from src.jhs_findform import JHSFindForm
@@ -37,8 +38,11 @@ class JHS(QWidget):
         self.options.logout_btn.clicked.connect(self.logout)
         self.options.add_form_btn.clicked.connect(lambda: self.stackedwidget.setCurrentIndex(0))
         self.options.find_form_btn.clicked.connect(lambda: self.stackedwidget.setCurrentIndex(1))
-        self.contentlayout.addWidget(self.options, 10)
-        self.contentlayout.addWidget(self.stackedwidget, 90)
+
+        self.splitter = QSplitter(Qt.Orientation.Horizontal)
+        self.splitter.addWidget(self.options)
+        self.splitter.addWidget(self.stackedwidget)
+        self.contentlayout.addWidget(self.splitter)
         self.mainlayout.addLayout(self.contentlayout)
         self.setLayout(self.mainlayout)
 

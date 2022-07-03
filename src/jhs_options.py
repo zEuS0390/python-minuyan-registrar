@@ -1,9 +1,10 @@
 from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout,
-    QPushButton, QGroupBox
+    QPushButton, QGroupBox,
+    QFrame
 )
 from PyQt5.QtGui import QFont
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QRect
 from src.constants import *
 from configparser import ConfigParser
 import os
@@ -28,7 +29,7 @@ class JHSOptions(QWidget):
         formbtnslayout = QVBoxLayout()
         formbtnsgroup.setLayout(formbtnslayout)
 
-        self.add_form_btn = QPushButton("Add")
+        self.add_form_btn = QPushButton("New")
         self.find_form_btn = QPushButton("Find")
         self.archive_form_btn = QPushButton("Archives")
         self.settings_btn = QPushButton("Settings")
@@ -40,11 +41,18 @@ class JHSOptions(QWidget):
         self.settings_btn.setFont(font)
         self.logout_btn.setFont(font)
 
+        self.line = QFrame();
+        self.line.setObjectName("line");
+        self.line.setGeometry(QRect(320, 150, 118, 3));
+        self.line.setFrameShape(QFrame.Shape.HLine);
+        self.line.setFrameShadow(QFrame.Shadow.Sunken);
+
         formbtnslayout.addWidget(self.add_form_btn)
         formbtnslayout.addWidget(self.find_form_btn)
         formbtnslayout.addWidget(self.archive_form_btn)
-        self.mainlayout.addWidget(self.logout_btn)
         self.mainlayout.addWidget(formbtnsgroup)
+        self.mainlayout.addWidget(self.line)
         self.mainlayout.addWidget(self.settings_btn)
+        self.mainlayout.addWidget(self.logout_btn)
         self.mainlayout.addStretch()
         

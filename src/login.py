@@ -2,10 +2,10 @@ from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout,
     QLabel, QLineEdit,
     QHBoxLayout, QPushButton,
-    QComboBox
+    QComboBox, QFrame
 )
 from PyQt5.QtGui import QFont, QIcon
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal,QRect
 from configparser import ConfigParser
 from src.constants import *
 from db.manager import Manager
@@ -57,6 +57,13 @@ class Login(QWidget):
         self.formselect_layout.addWidget(self.formselect_input)
         self.formselect_layout.addStretch()
         self.mainlayout.addLayout(self.formselect_layout)
+
+        self.line = QFrame();
+        self.line.setObjectName("line");
+        self.line.setGeometry(QRect(320, 150, 118, 3));
+        self.line.setFrameShape(QFrame.Shape.HLine);
+        self.line.setFrameShadow(QFrame.Shadow.Sunken);
+        self.mainlayout.addWidget(self.line)
 
         # User name input
         self.username_layout = QVBoxLayout()
