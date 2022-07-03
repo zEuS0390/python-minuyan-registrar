@@ -15,10 +15,10 @@ class MainApp:
             self.jhs = JHS(self.parser)
             self.jhs.loggedOut.connect(self.openLogin)
             self.login.hide()
-            self.jhs.show()
+            self.jhs.showMaximized()
         elif formselect_index == 1:
             self.shs = SHS(self.parser)
-            self.shs.show()
+            self.shs.showMaximized()
 
     # Create and show login widget
     def openLogin(self):
