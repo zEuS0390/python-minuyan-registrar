@@ -9,6 +9,14 @@ from src.constants import *
 from configparser import ConfigParser
 import os
 
+"""
+JHSOptions Class Members
+    Functions:
+        __init__(self, parser, parent=None)
+        setup_UI(self)
+        setup_option_btns(self)
+"""
+
 class JHSOptions(QWidget):
 
     def __init__(self, parser: ConfigParser, parent=None):
@@ -41,11 +49,11 @@ class JHSOptions(QWidget):
         self.settings_btn.setFont(font)
         self.logout_btn.setFont(font)
 
-        self.line = QFrame();
-        self.line.setObjectName("line");
-        self.line.setGeometry(QRect(320, 150, 118, 3));
-        self.line.setFrameShape(QFrame.Shape.HLine);
-        self.line.setFrameShadow(QFrame.Shadow.Sunken);
+        self.line = QFrame()
+        self.line.setObjectName("line")
+        self.line.setGeometry(QRect(320, 150, 118, 3))
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
         formbtnslayout.addWidget(self.add_form_btn)
         formbtnslayout.addWidget(self.find_form_btn)

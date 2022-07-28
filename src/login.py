@@ -2,7 +2,8 @@ from PyQt5.QtWidgets import (
     QWidget, QVBoxLayout,
     QLabel, QLineEdit,
     QHBoxLayout, QPushButton,
-    QComboBox, QFrame
+    QComboBox, QFrame,
+    QMessageBox
 )
 from PyQt5.QtGui import QFont, QIcon
 from PyQt5.QtCore import Qt, pyqtSignal,QRect
@@ -58,11 +59,11 @@ class Login(QWidget):
         self.formselect_layout.addStretch()
         self.mainlayout.addLayout(self.formselect_layout)
 
-        self.line = QFrame();
-        self.line.setObjectName("line");
-        self.line.setGeometry(QRect(320, 150, 118, 3));
-        self.line.setFrameShape(QFrame.Shape.HLine);
-        self.line.setFrameShadow(QFrame.Shadow.Sunken);
+        self.line = QFrame()
+        self.line.setObjectName("line")
+        self.line.setGeometry(QRect(320, 150, 118, 3))
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
         self.mainlayout.addWidget(self.line)
 
         # User name input
@@ -108,4 +109,8 @@ class Login(QWidget):
             self.success.emit(formselect_index)
             self.close()
         else:
-            pass
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Incorrect username or password")
+            msg.setWindowTitle("Response")
+            msg.exec()
