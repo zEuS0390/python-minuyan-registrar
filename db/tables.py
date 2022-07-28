@@ -18,6 +18,7 @@ class JHSForm(base):
     __tablename__ = "jhs_form"
     jhs_form_id = Column(Integer, primary_key=True)
     jhs_learner_id = Column(Integer, ForeignKey('jhs_learner.jhs_learner_id'))
+    jhs_date_submitted = Column(Date)
     jhs_record = relationship('JHSRecord', backref='jhs_form', cascade="all, delete-orphan")
     def __repr__(self):
         return f"JHSForm(jhs_form_id='{self.jhs_form_id}')"
