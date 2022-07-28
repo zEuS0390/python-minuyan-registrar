@@ -4,6 +4,7 @@ from tools.singleton import Singleton
 from tools.utils import Config
 from db.tables import *
 from tools.utils import toBinary
+from datetime import datetime
 
 class Manager(metaclass=Singleton):
 
@@ -26,6 +27,7 @@ class Manager(metaclass=Singleton):
     def jhs_add_form(self, filepath, learnerinfo, record):
         jhs_learner = JHSLearner()
         jhs_form = JHSForm(jhs_learner=jhs_learner)
+        jhs_form.jhs_date_submitted = datetime.now()
         jhs_learner.fname = learnerinfo[0]
         jhs_learner.mname = learnerinfo[1]
         jhs_learner.lname = learnerinfo[2]
@@ -80,3 +82,24 @@ class Manager(metaclass=Singleton):
         self.session.add(jhs_form)
         self.session.commit()
         self.session.close()
+
+    def jhs_search_form(self, learnerinfo):
+        fname = learnerinfo[0]
+        mname = learnerinfo[1]
+        lname = learnerinfo[2]
+        name_ext = learnerinfo[3]
+        sex = learnerinfo[6]
+        birthdate = learnerinfo[5]
+        learner_ref = learnerinfo[4]
+        query = self.session.query(JHSLearner).filter(
+            JHSLearner.fname == fname,
+            JHSLearner.mname == mname,
+            JHSLearner.lname == lname,
+            JHSLearner.name_ext == name_ext,
+            JHSLearner.sex == sex,
+            JHSLearner.birthdate == birthdate,
+            JHSLearner.learner_ref == learner_ref
+        ).all()
+        if query is not None:
+            return query
+        return []

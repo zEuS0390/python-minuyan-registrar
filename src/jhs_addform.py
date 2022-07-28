@@ -6,11 +6,32 @@ from PyQt5.QtWidgets import (
     QTabWidget, QPushButton,
     QHBoxLayout, QTableWidget,
     QAbstractScrollArea, QHeaderView, 
-    QSizePolicy, QFileDialog, QDateEdit
+    QSizePolicy, QFileDialog, QDateEdit,
+    QMessageBox
 )
 from PyQt5.QtGui import QFont
 from PyQt5.QtCore import Qt
 from db.manager import Manager
+
+"""
+JHSAddForm Class Members
+    Functions:
+        __init__(self, parent=None)
+        setup_UI(self)
+        setup_layouts(self)
+        setup_form_upload(self)
+        setup_form_btns(self)
+        uploadImage(self)
+        submit(self)
+        cancel(self)
+        setup_learner_details(self)
+        setup_record(self)
+        add_record(self)
+            add_grades_row()
+            delete_grades_row()
+        delete_record(self)
+        clear(self)
+"""
 
 class JHSAddForm(QWidget):
 
@@ -117,6 +138,11 @@ class JHSAddForm(QWidget):
 
     # Submit form
     def submit(self):
+        # Confirmation dialog
+        ret = QMessageBox.question(self, 'Confirmation', "Are you sure to submit the form?", QMessageBox.Yes | QMessageBox.No)
+        if ret == QMessageBox.No:
+            return
+
         # Learner information inputs
         filepath = self.imageupload_input.text()
         learnerinfo = [
@@ -154,9 +180,61 @@ class JHSAddForm(QWidget):
                         ginsi.append("")
                 gins.append(ginsi)
             record.append((ins, gins))
+
+        callback = []
+        
+        # Validate filepath input
+        if len(filepath) == 0:
+            callback.append("Empty filepath")
+
+        # Validate Learner info inputs
+        for info in learnerinfo:
+            try:
+                if len(info) == 0:
+                    callback.append("Missing learner information input")
+                    break
+            except:
+                continue
+
+        # Validate record inputs
+        for r in record:
+            # Record Details
+            for i in r[0]:
+                if len(i) == 0:
+                    callback.append("Missing record detail input")
+                    break
+            # Grade Inputs
+            for g in r[1]:
+                for gi in g:
+                    if len(gi) == 0:
+                        callback.append("Missing grade input")
+                        break
+
+        # Display callback messages
+        if len(callback) > 0:
+            font = QFont()
+            font.setPointSize(12)
+            msg = QMessageBox()
+            msg.setFont(font)
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Submitting form failed.")
+            msg.setWindowTitle("Response")
+            msg.setDetailedText("\n".join(callback))
+            msg.exec()
+            return
+
         try:
             self.db.jhs_add_form(filepath, learnerinfo, record)
+            font = QFont()
+            font.setPointSize(12)
+            msg = QMessageBox()
+            msg.setFont(font)
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Successfully submitted the form")
+            msg.setWindowTitle("Response")
+            msg.exec()
             print("Successfully submitted the form")
+            self.clear()
         except:
             print("Failed submitting the form!")
                         
@@ -166,8 +244,12 @@ class JHSAddForm(QWidget):
 
     # Set up learner information function
     def setup_learner_details(self):
+        font = QFont()
+        font.setPointSize(12)
+
         # Form Header Widgets
         self.formhdr_title = QLabel("Learner's Permanent Academic Record for Junior High School (SF10-JHS)")
+        self.formhdr_title.setFont(font)
 
         # Learner Information Widgets
         self.fname_label = QLabel("First Name:")
@@ -360,7 +442,8 @@ class JHSAddForm(QWidget):
 
         # Delete the selected row in grades table
         def delete_grades_row():
-            pass
+            rowcount = gradestable.rowCount()-1
+            gradestable.setRowCount(rowcount)
         delete_grades_btn.clicked.connect(delete_grades_row)
 
         # Grade layout configurations
@@ -398,3 +481,27 @@ class JHSAddForm(QWidget):
         self.lrn_input.clear()
         self.bdate_input.date().toPyDate()
         self.sex_input.setCurrentIndex(0)
+
+        # Record inputs
+        for n in range(self.recordtabs.count()):
+            w = self.recordtabs.widget(n) # # Widget
+            wl = w.layout() # Widget layout
+            groupboxes = [] # A list of groupboxes
+            for m in range(wl.count()):
+                groupboxes.append(wl.itemAt(m).widget())
+            dl = groupboxes[0].layout() # Details layout
+            # Loop on every vertical layout in details group
+            for m in range(dl.count()):
+                dvl = dl.itemAt(m) # Vertical layout
+                dvl.itemAt(1).widget().clear()
+            tb = groupboxes[1].layout().itemAt(1).widget() # Grades table layout            
+            tbrc = tb.rowCount() # Grades table row count
+            tbcc = tb.columnCount() # Grades table column count
+            for m in range(tbrc):
+                for k in range(tbcc):
+                    it = tb.item(m, k) # Get widget item in row (m) and column (k)
+                    if it is not None:
+                        it.setText("")
+
+        while self.recordtabs.count() > 1:
+            self.delete_record()
