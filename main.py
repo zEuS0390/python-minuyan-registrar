@@ -14,6 +14,7 @@ if __name__ == "__main__":
     )
     # Add argument for admin creation
     argparser.add_argument("-ca", "--createadmin", action="store_true", help="Create an admin user.")
+    argparser.add_argument("-sh", "--shell", action="store_true", help="Enter shell command line")
     # Parse console arguments
     args = argparser.parse_args()
     if args.createadmin:
@@ -26,6 +27,21 @@ if __name__ == "__main__":
         manager.session.add(user)
         manager.session.commit()
         manager.session.close()
+    elif args.shell:
+        while True:
+            entry = input(">> ")
+            if entry == "exit":
+                break
+            else:
+                try:
+                    y = eval(entry)
+                    print(y)
+                except:
+                    try:
+                        exec(entry)
+                    except Exception as e:
+                        print("Error:", e)
+                        continue
     else:
         confparser = ConfigParser()
         app = QApplication(sys.argv)
