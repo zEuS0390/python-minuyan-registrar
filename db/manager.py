@@ -99,7 +99,14 @@ class Manager(metaclass=Singleton):
             JHSLearner.sex == sex,
             JHSLearner.birthdate == birthdate,
             JHSLearner.learner_ref == learner_ref
-        ).all()
-        if query is not None:
-            return query
-        return []
+        ).first()
+        return query
+
+    def jhs_search_record(self, learner_id):
+        record = self.session.query(JHSRecord).join(JHSForm).join(JHSLearner).filter(JHSLearner.jhs_learner_id == learner_id).filter(JHSForm.jhs_learner_id == JHSLearner.jhs_learner_id).filter(JHSRecord.jhs_form_id == JHSForm.jhs_form_id).all()
+        grades = []
+        for r in record:
+            glist = self.session.query(JHSGrades).filter(JHSGrades.jhs_record_id == r.jhs_record_id).all()
+            for gs in glist:
+                grades.append(gs.jhs_grade)
+        return (record, grades)
