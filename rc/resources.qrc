@@ -2,5 +2,6 @@
 <RCC>
     <qresource>
         <file alias="main.png">../img/icons/main.png</file>
+        <file alias="profile_default.png">../img/profile_default.png</file>
     </qresource>
 </RCC>
