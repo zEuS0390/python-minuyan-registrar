@@ -25,6 +25,7 @@ class Login(QWidget):
         self.db = Manager()
         self.parser.read(os.path.join(CONFIG_DIR, APP_CONFIG))
         self.setup_UI()
+        self.setup_style_configurations()
 
     # Check key press events
     def keyPressEvent(self, key_event):
@@ -114,3 +115,10 @@ class Login(QWidget):
             msg.setText("Incorrect username or password")
             msg.setWindowTitle("Response")
             msg.exec()
+
+    def setup_style_configurations(self):
+        self.setStyleSheet("QWidget {background-color: rgb(255, 246, 222);}")
+        self.username_input.setStyleSheet("QLineEdit {background-color: white;}")
+        self.password_input.setStyleSheet("QLineEdit {background-color: white;}")
+        self.formselect_input.setStyleSheet("QComboBox {background-color: white;}")
+        self.login_btn.setStyleSheet("QPushButton {background-color: white;} ")
